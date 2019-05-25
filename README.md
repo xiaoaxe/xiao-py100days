@@ -8,6 +8,7 @@ python 100 days
 1. day07: 3个综合案例
 1. day09: 2个uml类图
 1. day09: 3个综合案例
+1. day12: 4个例子
 
 ## py100
 
@@ -21,7 +22,12 @@ python 100 days
 7. str & data structure
 8. class 
 9. adv class
-10. 
+10. gui & game
+11. regex
+12. file
+13. thread
+14. network
+15. image & doc
 
 ### py16-py20 advanced
 
