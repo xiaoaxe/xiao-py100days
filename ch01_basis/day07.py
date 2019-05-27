@@ -14,6 +14,7 @@ import sys
 import os
 import time
 import random
+from random import randint, sample, randrange
 
 
 ######
@@ -230,9 +231,99 @@ def dict_man():
     print(dic)
 
 
+# 综合练习
+def summary():
+    # two_color_ball()
+    # yuesefu()
+    run_board()
+
+
+def two_color_ball():
+    n = int(input("机选几住："))
+    for _ in range(n):
+        display(random_select())
+
+
+def display(balls):
+    for idx, ball in enumerate(balls):
+        if idx == len(balls) - 1:
+            print("|", end=' ')
+        print('%02d' % ball, end=' ')
+    print()
+
+
+def random_select():
+    red_balls = [x for x in range(1, 34)]
+
+    selected_balls = sample(red_balls, 6)
+    selected_balls.sort()
+
+    selected_balls.append(randint(1, 16))
+
+    return selected_balls
+
+
+def yuesefu():
+    persons = [True] * 30
+
+    counter, index, number = 0, 0, 0
+
+    while counter < 15:
+        if persons[index]:
+            number += 1
+            if number == 9:
+                persons[index] = False
+                counter += 1
+                number = 0
+
+        index += 1
+        index %= 30
+
+    for person in persons:
+        print(person, end=' ')
+
+
+def print_board(board):
+    print(board['TL'] + '|' + board['TM'] + '|' + board['TR'])
+    print('-+-+-')
+    print(board['ML'] + '|' + board['MM'] + '|' + board['MR'])
+    print('-+-+-')
+    print(board['BL'] + '|' + board['BM'] + '|' + board['BR'])
+
+
+def run_board():
+    init_board = {
+        'TL': ' ', 'TM': ' ', 'TR': ' ',
+        'ML': ' ', 'MM': ' ', 'MR': ' ',
+        'BL': ' ', 'BM': ' ', 'BR': ' '
+    }
+    begin = True
+    while begin:
+        curr_board = init_board.copy()
+        begin = False
+        turn = 'x'
+        counter = 0
+        os.system('clear')
+        print_board(curr_board)
+        while counter < 9:
+            move = input('轮到%s走棋, 请输入位置: ' % turn)
+            if curr_board[move] == ' ':
+                counter += 1
+                curr_board[move] = turn
+                if turn == 'x':
+                    turn = 'o'
+                else:
+                    turn = 'x'
+            os.system('clear')
+            print_board(curr_board)
+        choice = input('再玩一局?(yes|no)')
+        begin = choice == 'yes'
+
+
 if __name__ == '__main__':
     # method_str2()
     # list_man2()
     # set_man2()
     # dict_man()
-    exercise()
+    # exercise()
+    summary()

@@ -4,11 +4,7 @@ python 100 days
 大概率不能坚持下来，写多少算多少吧
 
 ## todo
-1. day05: 1个练习题
-1. day07: 3个综合案例
-1. day09: 2个uml类图
 1. day09: 3个综合案例
-1. day12: 4个例子
 
 ## py100
 
@@ -23,8 +19,8 @@ python 100 days
 8. class 
 9. adv class
 10. gui & game
-11. regex
-12. file
+11. file
+12. regex
 13. thread
 14. network
 15. image & doc
