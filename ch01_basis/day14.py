@@ -14,6 +14,16 @@ import json
 from threading import Thread
 import base64
 
+from smtplib import SMTP, SMTP_SSL
+from email.header import Header
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+from email.mime.multipart import MIMEMultipart
+
+import urllib.parse
+import http.client
+import json
+
 """
 七层网络模型：
 应用层，表示层，会话层
@@ -142,10 +152,77 @@ def clientit2():
     client.close()
 
 
-def print_color():
-    pass
+def send_email():
+    sender = 'xxxxxx@gmail.com'
+    receivers = ['xxxxxx@qq.com']
+
+    # 发送文本
+    # message = MIMEText('用Python发送的邮件', 'plain', 'utf-8')
+    # message['From'] = Header('小包', 'utf-8')
+    # message['To'] = Header('dear', 'utf-8')
+    # message['Subject'] = Header('示例代码实验邮件', 'utf-8')
+
+    # 发送附件
+    message = MIMEMultipart()
+    text_content = MIMEText("附件中有数据", 'plain', 'utf-8')
+    message['Subject'] = Header('本月数据', 'utf-8')
+
+    # 添加文本正文
+    message.attach(text_content)
+
+    # 添加文本
+    with open('/Users/baoqiang/1.txt', 'rb') as f:
+        txt = MIMEText(f.read(), 'base64', 'utf-8')
+        txt['Content-Type'] = 'text/plain'
+        txt['Content-Disposition'] = 'attachment; filename=hello.txt'
+
+        message.attach(txt)
+
+    # 添加xlxs
+    with open('/Users/baoqiang/1.xlsx', 'rb') as f:
+        xls = MIMEText(f.read(), 'base64', 'utf-8')
+        xls['Content-Type'] = 'application/vnd.ms-excel'
+        xls['Content-Disposition'] = 'attachment; filename=data.xlsx'
+
+        message.attach(xls)
+
+    smtper = SMTP('smtp.gmail.com', 587)
+    # smtper = SMTP('smtp-relay.gmail.com', 587)
+    smtper.ehlo()
+    smtper.starttls()
+
+    smtper.login(sender, 'xxxxxx')
+    smtper.sendmail(sender, receivers, message.as_string())
+
+    smtper.quit()
+
+    print('send finish')
+
+
+def send_request():
+    """
+    use requests is better
+    :return:
+    """
+
+    host = "106.ihuyi.com"
+    sms_send_uri = "/webservice/sms.php?method=Submit"
+    # 下面的参数需要填入自己注册的账号和对应的密码
+    params = urllib.parse.urlencode(
+        {'account': '你自己的账号', 'password': '你自己的密码', 'content': '您的验证码是：147258。请不要把验证码泄露给其他人。', 'mobile': '接收者的手机号',
+         'format': 'json'})
+    print(params)
+    headers = {'Content-type': 'application/x-www-form-urlencoded', 'Accept': 'text/plain'}
+    conn = http.client.HTTPConnection(host, port=80, timeout=30)
+    conn.request('POST', sms_send_uri, params, headers)
+    response = conn.getresponse()
+    response_str = response.read()
+    jsonstr = response_str.decode('utf-8')
+    print(json.loads(jsonstr))
+    conn.close()
 
 
 if __name__ == '__main__':
     # clientit()
-    clientit2()
+    # clientit2()
+    send_email()
