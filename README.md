@@ -5,6 +5,7 @@ python 100 days
 
 ## todo
 1. day09: 3个综合案例
+1. day14: 发送邮件和短信
 
 ## py100
 
